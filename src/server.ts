@@ -3,7 +3,7 @@ import fs from "fs";
 import cors from "cors"
 
 const app=express()
-const port = 3778
+const port = 3968
 app.use(cors())
 
 const jobs = JSON.parse(fs.readFileSync("./src/data/jobs.json","utf8")) as Job[];
@@ -16,11 +16,21 @@ type Job={
 app.get("/",(req:express.Request,res:express.Response)=>{
 res.send("Jobs site API")
 })
-
+// add todos to the data
 app.get("/jobs",(req:express.Request,res:express.Response)=>{
-    res.json((jobs))
+    //res.json((jobs))
+    res.json(jobs.map(job=>{
+        return{
+           ...job,
+            todo:{
+                company:job.company,
+               title:job.title,
+              test:"abdul"
+            }
+        }
+    }))
 })
-// add todos
+// add todos seperat
 app.get("/todos",(req:express.Request,res:express.Response)=>{
     res.json(jobs.map((job:Job)=>{
         return {
