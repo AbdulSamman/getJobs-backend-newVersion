@@ -1,45 +1,35 @@
 import express from "express"
 import fs from "fs";
 import cors from "cors"
+import * as model from "./model.js"
+import * as type from "./types.js"
 
 const app=express()
 const port = 3968
 app.use(cors())
 
-const jobs = JSON.parse(fs.readFileSync("./src/data/jobs.json","utf8")) as Job[];
-const skills=JSON.parse(fs.readFileSync("./src/data/skillInfo.json","utf8"))
 
-type Job={
-    id:number,title:string,company:string,url:string,description:string,skillList:string,publicationDate:string,todo:string
-}
+const skills=JSON.parse(fs.readFileSync("./src/data/skillInfo.json","utf8")) as type.ISkill
+
 
 app.get("/",(req:express.Request,res:express.Response)=>{
-res.send("Jobs site API")
+res.send(model.getApiDocHTML())
 })
-// add todos to the data
+// row Data
 app.get("/jobs",(req:express.Request,res:express.Response)=>{
-    //res.json((jobs))
-    res.json(jobs.map(job=>{
-        return{
-           ...job,
-            todo:{
-                company:job.company,
-               title:job.title,
-              test:"abdul"
-            }
-        }
-    }))
+    res.json((model.getJobs()))
+
 })
-// add todos seperat
+
+// add todos to the data
+app.get("/jobsTodos",(req:express.Request,res:express.Response)=>{
+    res.json((model.getAddedTodos()))
+
+})
+//add todos seperat
 app.get("/todos",(req:express.Request,res:express.Response)=>{
-    res.json(jobs.map((job:Job)=>{
-        return {
-            todo:job.todo,
-            company:job.company,
-            title:job.title,
-            test:"abdul"
-        }
-    }))
+    res.json(model.getTodos())
+
 })
 
 app.get("/skills",(req:express.Request,res:express.Response)=>{
