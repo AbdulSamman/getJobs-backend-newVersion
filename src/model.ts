@@ -1,7 +1,9 @@
 import fs from "fs";
-import * as type from "./types.js"
+import {JobRaw,Job, ISkill,nullObjectSkill,Todos}from "./types.js"
+import * as model from "./model.js"
 
-const rowJobs = JSON.parse(fs.readFileSync("./src/data/jobs.json","utf8")) as type.JobRow[];
+const rawJobs : JobRaw[]= JSON.parse(fs.readFileSync("./src/data/jobs.json","utf8")) ;
+const skillsInfo : any=JSON.parse(fs.readFileSync("./src/data/skillInfo.json","utf8"))
 
 
 // get jobs
@@ -11,22 +13,89 @@ const rowJobs = JSON.parse(fs.readFileSync("./src/data/jobs.json","utf8")) as ty
 // }
 
 // convert skills in jobs
-export const getJobs=()=>{
-    const jobs:type.Job[] =[]
-    rowJobs.forEach((rowJob:type.JobRow)=>{
-   const job:type.Job={
-    ...rowJob,
-    skills:[]
-   }
-   jobs.push(job)
-})
-    return  jobs
 
+// array
+
+// export const getJobs=()=>{
+//     const jobs:Job[] =[]
+//     rawJobs.forEach((rawJob:JobRaw)=>{
+//    const job:Job={
+//     ...rawJob,
+//     skills: model.buildSkills(rawJob.skillList)
+//    }
+//    jobs.push(job)
+// })
+//     return  jobs
+
+// }
+
+// oder object
+// import model sich selbst
+export const getJobs=()=>{
+ return rawJobs.map((rawJob:JobRaw)=>{
+    return {
+        ...rawJob,
+        skills: model.buildSkills(rawJob.skillList)
+    }
+ })
 }
 
-// add todos to row data
+
+
+export const buildSkills=(skillList:string)=>{
+    const skills : ISkill[] =[];
+    //leerzeichen löschen
+const skillIdCodes= skillList.split(",").map(m=>m.trim());
+skillIdCodes.forEach((skillIdCode)=>{
+    //durchsuchen, wenn angular gefunden wird, dass adde skills
+    const _skill =skillsInfo[skillIdCode];
+
+    if(_skill===undefined){
+     //Füge einen leeren Skill hinzu, wenn der Skill nicht gefunden wurde
+        const skill : ISkill= {
+            ...nullObjectSkill,
+            idCode: skillIdCode
+        }
+        skills.push(skill)
+    }else{
+    //Füge den gefundenen Skill hinzu
+        const skill : ISkill={
+            ..._skill,
+           skillIdCode
+        }
+        skills.push(skill)
+    }
+})
+
+    return skills;
+}
+
+// oder  skills als object
+
+// export const buildSkills = (skillList: string) => {
+    //     const skills: { [key: string]: ISkill } = {};
+    //     const skillIdCodes = skillList.split(",").map(m => m.trim());
+
+//     skillIdCodes.forEach((skillIdCode) => {
+//         const _skill = skillsInfo[skillIdCode];
+
+//         if (_skill === undefined) {
+
+//             skills[skillIdCode] = { ...nullObjectSkill, idCode: skillIdCode };
+//         } else {
+
+//             skills[skillIdCode] = { ..._skill, skillIdCode };
+//         }
+//     });
+
+//     return skills;
+// };
+
+
+
+// add todos to raw data
 export const getAddedTodos=()=>{
-    return rowJobs.map((job:type.Job)=>{
+    return rawJobs.map((job:Job)=>{
         return {
 
            ...job,
@@ -41,19 +110,45 @@ export const getAddedTodos=()=>{
     })
 }
 
-// add seperate todo
+// add seperate todo Array
+
+// export const getTodos=()=>{
+//     const todos:Todos[] =[]
+//     rawJobs.forEach((job:Job)=>{
+
+//         const todo:Todos={
+//             company:job.company,
+//             title:job.title,
+//             test:"abdul"
+//         }
+//         todos.push(todo)
+//     })
+//     return todos
+
+
+// }
+
+// todos  object
 
 export const getTodos=()=>{
-    return  rowJobs.map((job:type.Job)=>{
+    return  rawJobs.map((job:Job)=>{
         return {
             todo:job.todo,
             company:job.company,
             title:job.title,
-            test:"abdul"
+            test:"abdul44"
         }
     })
 
 
+ }
+
+
+
+
+// getSkills
+export const getSkills=()=>{
+    return skillsInfo
 }
 
 

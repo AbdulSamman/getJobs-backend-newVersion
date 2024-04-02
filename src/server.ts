@@ -2,14 +2,13 @@ import express from "express"
 import fs from "fs";
 import cors from "cors"
 import * as model from "./model.js"
-import * as type from "./types.js"
+
 
 const app=express()
 const port = 3968
 app.use(cors())
 
 
-const skills=JSON.parse(fs.readFileSync("./src/data/skillInfo.json","utf8")) as type.ISkill
 
 
 app.get("/",(req:express.Request,res:express.Response)=>{
@@ -33,7 +32,7 @@ app.get("/todos",(req:express.Request,res:express.Response)=>{
 })
 
 app.get("/skills",(req:express.Request,res:express.Response)=>{
-    res.json((skills))
+    res.json((model.getSkills()))
 })
 
 app.listen(port,()=>{

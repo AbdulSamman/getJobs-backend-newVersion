@@ -1,30 +1,52 @@
 export  type ISkill ={
-    [key:string]:{
+        idCode:string,
         name:string,
         url:string,
         description:string
-    }
-     }
 
-     export type JobRow={
+}
+
+export  const nullObjectSkill = {
+    idCode:"",
+        name:"",
+        url:"",
+        description:""
+
+}
+
+
+export type JobRaw={
         id:number,
         title:string,
         company:string,
         url:string,
         description:string,
-        skillList:string,publicationDate:string,
+        skillList:string,
+        publicationDate:string,
         todo:string
 
+}
+
+
+    //  export type Job={
+    //     id:number,
+    //     title:string,
+    //     company:string,
+    //     url:string,
+    //     description:string,
+    //     skillList:string,publicationDate:string,
+    //     todo:string
+    //     skills:string[]
+    // }
+
+    // oder
+
+    export type Job = JobRaw & {
+        skills:ISkill[]
     }
 
-
-     export type Job={
-        id:number,
-        title:string,
-        company:string,
-        url:string,
-        description:string,
-        skillList:string,publicationDate:string,
-        todo:string
-        skills:string[]
+    export type Todos= {
+        company: string,
+        title: string,
+        test: string
     }

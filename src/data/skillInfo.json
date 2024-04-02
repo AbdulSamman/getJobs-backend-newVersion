@@ -23,5 +23,18 @@
       "name": "Swagger",
       "url": "https://en.wikipedia.org/wiki/Swagger_(software)",
       "description": "a suite of tools for APO developers created n 2011"
-    }
+    },
+    "jest":{
+      "name":"Jest",
+      "url":"http://onespace-pages.dev/techItems?id=19",
+      "description":"a javascript testing framework lie Mocha but simpler"
+    },
+    "piwik":{
+      "name":"Piwik","url":"piwik","description":"piwik"
+  },
+  "python":{
+    "name":"Python",
+    "url":"https://google.search?q=paython.com",
+    "description":"   Python is widely recognized as a versatile and highly popular programming language, utilized across various domains such as web development, data analysis, and machine learning"
+  }
   }
